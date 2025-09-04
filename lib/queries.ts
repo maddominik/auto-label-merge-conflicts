@@ -139,6 +139,28 @@ export const addLabelsToLabelable = (
   });
 };
 
+export const createComment = (
+  octokit: github.GitHub,
+  {
+    owner,
+    repo,
+    issue_number,
+    body
+  }: {
+    owner: string;
+    repo: string;
+    issue_number: number;
+    body: string;
+  }
+) => {
+  return octokit.rest.issues.createComment({
+    owner,
+    repo,
+    issue_number,
+    body
+  });
+};
+
 export const removeLabelsFromLabelable = (
   octokit: github.GitHub,
   {

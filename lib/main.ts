@@ -5,7 +5,8 @@ import {
   addLabelsToLabelable,
   getLabels,
   getPullRequests,
-  removeLabelsFromLabelable
+  removeLabelsFromLabelable,
+  createComment
 } from './queries';
 import { getPullrequestsWithoutMergeStatus, wait } from './util';
 
@@ -110,9 +111,10 @@ export async function run() {
             labelableId: pullrequest.node.id
           });
           // Add a comment to the PR indicating conflict merges
-          await octokit.issues.createComment({
-            ...github.context.repo,
-            issue_number: pullrequest.node.number,
+          await createComment(octokit, {
+            owner: github.context.repo.owner,
+            repo: github.context.repo.repo,
+            issue_number: Number(pullrequest.node.number),
             body: 'This PR has conflict merges'
           });
           core.debug(`PR #${pullrequest.node.number} done`);
