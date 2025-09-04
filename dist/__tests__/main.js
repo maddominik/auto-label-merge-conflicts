@@ -17,11 +17,11 @@ describe('Auto label merge conflicts', () => {
     });
     describe('Parameters', () => {
         test('should require CONFLICT_LABEL_NAME', async () => {
-            await main_1.run();
+            await (0, main_1.run)();
             expect(spy).toHaveBeenCalledWith('CONFLICT_LABEL_NAME', { "required": true });
         });
         test('should require GITHUB_TOKEN', async () => {
-            await main_1.run();
+            await (0, main_1.run)();
             expect(spy).toHaveBeenCalledWith('GITHUB_TOKEN', { "required": true });
         });
     });

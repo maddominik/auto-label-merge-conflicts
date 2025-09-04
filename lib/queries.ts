@@ -70,7 +70,7 @@ const getPullRequestPages = (octokit: ReturnType<typeof github.getOctokit>, cont
 export const getPullRequests = async (
   octokit: ReturnType<typeof github.getOctokit>, context: Context
 ): Promise<IGithubPRNode[]> => {
-  let pullrequestData;
+  let pullrequestData: any;
   let pullrequests: IGithubPRNode[] = [];
   let cursor: string | undefined;
   let hasNextPage = true;

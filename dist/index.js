@@ -2,5 +2,5 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 const main_1 = require("./lib/main");
 (async () => {
-    await main_1.run();
+    await (0, main_1.run)();
 })();

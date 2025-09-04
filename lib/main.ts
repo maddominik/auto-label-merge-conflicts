@@ -24,7 +24,7 @@ export async function run() {
   console.debug(`maxRetries=${maxRetries} ; waitMs=${waitMs}`);
 
   // fetch label data
-  let labelData;
+  let labelData: any;
   try {
     labelData = await getLabels(octokit, github.context, conflictLabelName);
   } catch (error) {

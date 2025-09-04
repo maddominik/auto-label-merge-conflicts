@@ -1,5 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.run = void 0;
 const core = require("@actions/core");
 const github = require("@actions/github");
 const queries_1 = require("./queries");
@@ -18,7 +19,7 @@ async function run() {
     // fetch label data
     let labelData;
     try {
-        labelData = await queries_1.getLabels(octokit, github.context, conflictLabelName);
+        labelData = await (0, queries_1.getLabels)(octokit, github.context, conflictLabelName);
     }
     catch (error) {
         core.setFailed('getLabels request failed: ' + error);
@@ -45,16 +46,16 @@ async function run() {
         // if merge status is unknown for any PR, wait a bit and retry
         if (pullrequestsWithoutMergeStatus.length > 0) {
             core.debug(`...waiting for mergeable info...`);
-            await util_1.wait(waitMs);
+            await (0, util_1.wait)(waitMs);
         }
         try {
-            pullRequests = await queries_1.getPullRequests(octokit, github.context);
+            pullRequests = await (0, queries_1.getPullRequests)(octokit, github.context);
         }
         catch (error) {
             core.setFailed('getPullRequests request failed: ' + error);
         }
         // check if there are PRs with unknown mergeable status
-        pullrequestsWithoutMergeStatus = util_1.getPullrequestsWithoutMergeStatus(pullRequests);
+        pullrequestsWithoutMergeStatus = (0, util_1.getPullrequestsWithoutMergeStatus)(pullRequests);
     }
     // after $maxRetries we give up, probably Github has some issues
     if (pullrequestsWithoutMergeStatus.length > 0) {
@@ -76,7 +77,7 @@ async function run() {
             else {
                 core.debug(`Labeling PR #${pullrequest.node.number}...`);
                 try {
-                    await queries_1.addLabelsToLabelable(octokit, {
+                    await (0, queries_1.addLabelsToLabelable)(octokit, {
                         labelIds: conflictLabel.node.id,
                         labelableId: pullrequest.node.id
                     });
@@ -84,7 +85,7 @@ async function run() {
                     core.debug(`Owner: ${github.context.repo.owner}`);
                     core.debug(`Repo: ${github.context.repo.repo}`);
                     core.debug(`Issue number: ${Number(pullrequest.node.number)}`);
-                    await queries_1.createComment(octokit, {
+                    await (0, queries_1.createComment)(octokit, {
                         owner: github.context.repo.owner,
                         repo: github.context.repo.repo,
                         issue_number: Number(pullrequest.node.number),
@@ -118,7 +119,7 @@ async function run() {
             else {
                 core.debug(`Unlabeling PR #${pullrequest.node.number}...`);
                 try {
-                    await queries_1.removeLabelsFromLabelable(octokit, {
+                    await (0, queries_1.removeLabelsFromLabelable)(octokit, {
                         labelIds: conflictLabel.node.id,
                         labelableId: pullrequest.node.id
                     });
