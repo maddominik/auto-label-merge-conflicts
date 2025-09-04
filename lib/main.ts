@@ -118,7 +118,7 @@ export async function run() {
             owner: github.context.repo.owner,
             repo: github.context.repo.repo,
             issue_number: Number(pullrequest.node.number),
-            body: 'This PR has conflict merges'
+            body: '⚠️ This PR has merge conflicts that need to be resolved.'
           });
           core.debug(`PR #${pullrequest.node.number} done`);
         } catch (error) {
