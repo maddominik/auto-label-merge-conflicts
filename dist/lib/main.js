@@ -11,7 +11,7 @@ async function run() {
     const myToken = core.getInput('GITHUB_TOKEN', {
         required: true
     });
-    const octokit = new github.GitHub(myToken);
+    const octokit = github.getOctokit(myToken);
     const maxRetries = Number(core.getInput('MAX_RETRIES'));
     const waitMs = Number(core.getInput('WAIT_MS'));
     console.debug(`maxRetries=${maxRetries} ; waitMs=${waitMs}`);
@@ -79,6 +79,16 @@ async function run() {
                     await queries_1.addLabelsToLabelable(octokit, {
                         labelIds: conflictLabel.node.id,
                         labelableId: pullrequest.node.id
+                    });
+                    // Add a comment to the PR indicating conflict merges
+                    core.debug(`Owner: ${github.context.repo.owner}`);
+                    core.debug(`Repo: ${github.context.repo.repo}`);
+                    core.debug(`Issue number: ${Number(pullrequest.node.number)}`);
+                    await queries_1.createComment(octokit, {
+                        owner: github.context.repo.owner,
+                        repo: github.context.repo.repo,
+                        issue_number: Number(pullrequest.node.number),
+                        body: 'This PR has conflict merges'
                     });
                     core.debug(`PR #${pullrequest.node.number} done`);
                 }

@@ -116,6 +116,14 @@ exports.addLabelsToLabelable = (octokit, { labelIds, labelableId }) => {
         headers: { Accept: 'application/vnd.github.starfire-preview+json' }
     });
 };
+exports.createComment = (octokit, { owner, repo, issue_number, body }) => {
+    return octokit.rest.issues.createComment({
+        owner,
+        repo,
+        issue_number,
+        body
+    });
+};
 exports.removeLabelsFromLabelable = (octokit, { labelIds, labelableId }) => {
     const query = `
     mutation {
