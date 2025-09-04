@@ -1,5 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.removeLabelsFromLabelable = exports.createComment = exports.addLabelsToLabelable = exports.getLabels = exports.getPullRequests = void 0;
 const core = require("@actions/core");
 const getPullRequestPages = (octokit, context, cursor) => {
     let query;
@@ -64,7 +65,7 @@ const getPullRequestPages = (octokit, context, cursor) => {
     });
 };
 // fetch all PRs
-exports.getPullRequests = async (octokit, context) => {
+const getPullRequests = async (octokit, context) => {
     let pullrequestData;
     let pullrequests = [];
     let cursor;
@@ -88,7 +89,8 @@ exports.getPullRequests = async (octokit, context) => {
     }
     return pullrequests;
 };
-exports.getLabels = (octokit, context, labelName) => {
+exports.getPullRequests = getPullRequests;
+const getLabels = (octokit, context, labelName) => {
     const query = `{
     repository(owner: "${context.repo.owner}", name: "${context.repo.repo}") {
       labels(first: 100, query: "${labelName}") {
@@ -105,7 +107,8 @@ exports.getLabels = (octokit, context, labelName) => {
         headers: { Accept: 'application/vnd.github.ocelot-preview+json' }
     });
 };
-exports.addLabelsToLabelable = (octokit, { labelIds, labelableId }) => {
+exports.getLabels = getLabels;
+const addLabelsToLabelable = (octokit, { labelIds, labelableId }) => {
     const query = `
     mutation {
       addLabelsToLabelable(input: {labelIds: ["${labelIds}"], labelableId: "${labelableId}"}) {
@@ -116,7 +119,17 @@ exports.addLabelsToLabelable = (octokit, { labelIds, labelableId }) => {
         headers: { Accept: 'application/vnd.github.starfire-preview+json' }
     });
 };
-exports.removeLabelsFromLabelable = (octokit, { labelIds, labelableId }) => {
+exports.addLabelsToLabelable = addLabelsToLabelable;
+const createComment = (octokit, { owner, repo, issue_number, body }) => {
+    return octokit.rest.issues.createComment({
+        owner,
+        repo,
+        issue_number,
+        body
+    });
+};
+exports.createComment = createComment;
+const removeLabelsFromLabelable = (octokit, { labelIds, labelableId }) => {
     const query = `
     mutation {
       removeLabelsFromLabelable(input: {labelIds: ["${labelIds}"], labelableId: "${labelableId}"}) {
@@ -127,3 +140,4 @@ exports.removeLabelsFromLabelable = (octokit, { labelIds, labelableId }) => {
         headers: { Accept: 'application/vnd.github.starfire-preview+json' }
     });
 };
+exports.removeLabelsFromLabelable = removeLabelsFromLabelable;

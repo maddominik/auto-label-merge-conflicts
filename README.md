@@ -62,4 +62,4 @@ You can tweak `MAX_RETRIES` and `WAIT_MS` to increase the timeout before giving 
 
 To play around with the code base, you need `Docker` and `make` set up locally.
 
-Run `make build`, `make develop`, then `yarn install`.
+Run `make build`, `make develop`, then `npm install`.

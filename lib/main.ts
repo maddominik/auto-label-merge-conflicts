@@ -5,7 +5,8 @@ import {
   addLabelsToLabelable,
   getLabels,
   getPullRequests,
-  removeLabelsFromLabelable
+  removeLabelsFromLabelable,
+  createComment
 } from './queries';
 import { getPullrequestsWithoutMergeStatus, wait } from './util';
 
@@ -17,13 +18,13 @@ export async function run() {
     required: true
   });
 
-  const octokit = new github.GitHub(myToken);
+  const octokit = github.getOctokit(myToken);
   const maxRetries = Number( core.getInput('MAX_RETRIES') );
   const waitMs = Number( core.getInput('WAIT_MS') );
   console.debug(`maxRetries=${maxRetries} ; waitMs=${waitMs}`);
 
   // fetch label data
-  let labelData;
+  let labelData: any;
   try {
     labelData = await getLabels(octokit, github.context, conflictLabelName);
   } catch (error) {
@@ -108,6 +109,16 @@ export async function run() {
           await addLabelsToLabelable(octokit, {
             labelIds: conflictLabel.node.id,
             labelableId: pullrequest.node.id
+          });
+          // Add a comment to the PR indicating conflict merges
+          core.debug(`Owner: ${github.context.repo.owner}`);
+          core.debug(`Repo: ${github.context.repo.repo}`);
+          core.debug(`Issue number: ${Number(pullrequest.node.number)}`);
+          await createComment(octokit, {
+            owner: github.context.repo.owner,
+            repo: github.context.repo.repo,
+            issue_number: Number(pullrequest.node.number),
+            body: '⚠️ This PR has merge conflicts that need to be resolved.'
           });
           core.debug(`PR #${pullrequest.node.number} done`);
         } catch (error) {
