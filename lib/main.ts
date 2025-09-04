@@ -111,6 +111,9 @@ export async function run() {
             labelableId: pullrequest.node.id
           });
           // Add a comment to the PR indicating conflict merges
+          core.debug(`Owner: ${github.context.repo.owner}`);
+          core.debug(`Repo: ${github.context.repo.repo}`);
+          core.debug(`Issue number: ${Number(pullrequest.node.number)}`);
           await createComment(octokit, {
             owner: github.context.repo.owner,
             repo: github.context.repo.repo,
