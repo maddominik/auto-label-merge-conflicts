@@ -109,6 +109,12 @@ export async function run() {
             labelIds: conflictLabel.node.id,
             labelableId: pullrequest.node.id
           });
+          // Add a comment to the PR indicating conflict merges
+          await octokit.issues.createComment({
+            ...github.context.repo,
+            issue_number: pullrequest.node.number,
+            body: 'This PR has conflict merges'
+          });
           core.debug(`PR #${pullrequest.node.number} done`);
         } catch (error) {
           core.setFailed('addLabelsToLabelable request failed: ' + error);
