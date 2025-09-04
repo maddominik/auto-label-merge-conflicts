@@ -15,12 +15,12 @@ jobs:
         with:
           node-version: 12
       - name: install
-        run: yarn install
+        run: npm ci
       - name: lint
-        run: yarn lint
+        run: npm run lint
       - name: build
-        run: yarn build
+        run: npm run build
       - name: test
-        run: yarn test
+        run: npm test
       - name: fix COV paths
         run: cp test-report.xml test-report2.xml && sed 's/\/home\/runner\/work\/auto-label-merge-conflicts\/auto-label-merge-conflicts/\/github\/workspace/g' test-report2.xml > test-report.xml
