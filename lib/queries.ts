@@ -153,7 +153,7 @@ export const createComment = (
     body: string;
   }
 ) => {
-  return octokit.rest.issues.createComment({
+  return octokit.issues.createComment({
     owner,
     repo,
     issue_number,
