@@ -3,7 +3,7 @@ import * as github from '@actions/github'
 import { Context } from '@actions/github/lib/context';
 import { IGithubPRNode } from './interfaces';
 
-const getPullRequestPages = (octokit: github.GitHub, context: Context, cursor?: string) => {
+const getPullRequestPages = (octokit: ReturnType<typeof github.getOctokit>, context: Context, cursor?: string) => {
   let query;
   if (cursor) {
     query = `{
@@ -68,7 +68,7 @@ const getPullRequestPages = (octokit: github.GitHub, context: Context, cursor?: 
 
 // fetch all PRs
 export const getPullRequests = async (
-  octokit: github.GitHub, context: Context
+  octokit: ReturnType<typeof github.getOctokit>, context: Context
 ): Promise<IGithubPRNode[]> => {
   let pullrequestData;
   let pullrequests: IGithubPRNode[] = [];
@@ -98,7 +98,7 @@ export const getPullRequests = async (
   return pullrequests;
 };
 
-export const getLabels = (octokit: github.GitHub, context: Context, labelName: string) => {
+export const getLabels = (octokit: ReturnType<typeof github.getOctokit>, context: Context, labelName: string) => {
   const query = `{
     repository(owner: "${context.repo.owner}", name: "${context.repo.repo}") {
       labels(first: 100, query: "${labelName}") {
@@ -117,8 +117,7 @@ export const getLabels = (octokit: github.GitHub, context: Context, labelName: s
   });
 };
 
-export const addLabelsToLabelable = (
-  octokit: github.GitHub,
+  octokit: ReturnType<typeof github.getOctokit>,
   {
     labelIds,
     labelableId
@@ -139,8 +138,7 @@ export const addLabelsToLabelable = (
   });
 };
 
-export const createComment = (
-  octokit: github.GitHub,
+  octokit: ReturnType<typeof github.getOctokit>,
   {
     owner,
     repo,
@@ -161,8 +159,7 @@ export const createComment = (
   });
 };
 
-export const removeLabelsFromLabelable = (
-  octokit: github.GitHub,
+  octokit: ReturnType<typeof github.getOctokit>,
   {
     labelIds,
     labelableId
