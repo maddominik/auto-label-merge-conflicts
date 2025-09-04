@@ -117,6 +117,7 @@ export const getLabels = (octokit: ReturnType<typeof github.getOctokit>, context
   });
 };
 
+export const addLabelsToLabelable = (
   octokit: ReturnType<typeof github.getOctokit>,
   {
     labelIds,
@@ -138,6 +139,7 @@ export const getLabels = (octokit: ReturnType<typeof github.getOctokit>, context
   });
 };
 
+export const createComment = (
   octokit: ReturnType<typeof github.getOctokit>,
   {
     owner,
@@ -159,6 +161,7 @@ export const getLabels = (octokit: ReturnType<typeof github.getOctokit>, context
   });
 };
 
+export const removeLabelsFromLabelable = (
   octokit: ReturnType<typeof github.getOctokit>,
   {
     labelIds,
