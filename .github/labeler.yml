@@ -1,8 +1,0 @@
-dependencies:
-  - package-lock.json
-  - package.json
-github:
-  - .github/*
-  - .github/**/*
-lint:
-  - .tslint.json
